@@ -1,3 +1,19 @@
-body {
-    background-color: skyblue;
-}
+body {background-color: white; font-family: "Comic Neue"}
+.navbar {background-color: white;}
+.navbar .logo {width:10%;}
+.button-orange {border: 2px solid #EE7418; background-color: #EE7418; color: white!important; text-decoration: none;}
+.button-blue {border: 2px solid #0197A2; color: #656565!important; text-decoration: none;}
+.button-blue-reverse {background-color: #0197A2; color: white!important;}
+.button-submit {color: white; background-color: #0197A2}
+
+.border-orange {border: 2px solid #EE7418;}
+
+.button-orange:hover {background-color: white; color: #656565!important;}
+.button-blue:hover {background-color: #0197A2; color: white!important;}
+.button-blue-reverse:hover {background-color: white; color: #656565!important;border: 2px solid #0197A2;}
+.button-submit:hover {background-color: white; border: 2px solid #0197A2;}
+
+.sponsor-icon {width:7.5%;}
+
+.bg-orange {background-color: #EE7418;}
+.bg-blue {background-color: #0197A2;}

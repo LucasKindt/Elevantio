@@ -3,6 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Activity;
+use App\Entity\Category;
+use App\Entity\Sponsor;
+use App\Entity\TargetGroup;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -32,6 +35,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Activiteiten', 'fa fa-tasks', Activity::class);
         yield MenuItem::linkToCrud('Gebruikers', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('Categorieën', 'fa fa-user', Category::class);
+        yield MenuItem::linkToCrud('Sponsoren', 'fa fa-heart', Sponsor::class);
+        yield MenuItem::linkToCrud('Doelgroepen', 'fa fa-user', TargetGroup::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 

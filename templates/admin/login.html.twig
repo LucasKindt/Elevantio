@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} De rijke schooldag{% endblock %}
+
+{% block body %}
+    <main class="container w-50 p-5">
+        {% if error %}
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+
+        <form action="{{ path('app_login') }}" method="post">
+            <h1 class="h3 mb-3 fw-normal">Inloggen</h1>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="form-floating my-2">
+                <input type="email" name="_username" class="form-control" id="email" placeholder="naam@voorbeeld.com" value="{{ last_username }}" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="form-floating my-2">
+                <input type="password" name="_password" class="form-control" id="password" placeholder="Wachtwoord" required>
+                <label for="password">Wachtwoord</label>
+            </div>
+            <button class="btn button-submit w-100 py-2 mt-2" type="submit">Inloggen</button>
+            <p>Nog geen account? <a href="{{ path('app_register') }}">Meld je hier aan.</a></p>
+        </form>
+    </main>
+{% endblock %}

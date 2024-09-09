@@ -1,20 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PageController!{% endblock %}
+{% block title %} De rijke schooldag{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/lucas/Desktop/localhost/Elevantio/src/Controller/PageController.php</code></li>
-        <li>Your template at <code>/Users/lucas/Desktop/localhost/Elevantio/templates/page/index.html.twig</code></li>
-    </ul>
-</div>
+    <div class="container my-5">
+        <p class="text-center my-3">
+            Kinderen hebben recht op gelijke kansen. Ieder kind moet zijn talenten kunnen ontdekken en zich volledig kunnen ontwikkelen, ongeacht hun achtergrond of financiële situatie. De Rijke Schooldag is in het leven geroepen om alle kinderen de kans te geven om zich verder te verrijken door deel te kunnen nemen aan leuke sportieve en culturele activiteiten. Wij zijn als organisatie op allelei manier ondersteunend bij dit programma. Klik op onderstaande buttons om meer te weten te komen over de mogelijkheden die wij bieden.
+        </p>
+        <div class="row justify-content-center">
+            <div class="col-md-4 p-2">
+                <div class="col-12 bg-blue d-flex align-baseline justify-content-center flex-column py-4">
+                    <a class="btn button-orange mx-auto" href="{{ path('app_login') }}">Inloggen</a>
+                    <img class="img-fluid mx-auto" src="{{ asset('images/children.png') }}" alt="spelende kinderen">
+                </div>
+            </div>
+            <div class="col-md-4 p-2">
+                <div class="col-12 bg-orange d-flex align-baseline justify-content-center flex-column py-4">
+                    <a class="btn button-blue-reverse mx-auto" href="{{ path('app_register') }}">Registreren</a>
+                    <img class="img-fluid mx-auto" src="{{ asset('images/children.png') }}" alt="spelende kinderen">
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

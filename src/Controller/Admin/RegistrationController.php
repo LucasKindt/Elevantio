@@ -48,7 +48,7 @@ class RegistrationController extends AbstractDashboardController
                     ->from(new Address('lucaskindt77@gmail.com', 'Mailer'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
+                    ->htmlTemplate('admin/register.html.twig')
             );
 
             // do anything else you need here, like send an email
