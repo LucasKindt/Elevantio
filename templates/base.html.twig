@@ -26,12 +26,20 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item mx-1">
+                                <a class="nav-link button-orange" href="{{ path('app_dashboard') }}">Beheer</a>
+                            </li>
+                        {% endif %}
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                            <li class="nav-item mx-2">
+                            <li class="nav-item mx-1">
                                 <a class="nav-link button-orange" href="{{ path('app_activities') }}">Activiteiten bekijken</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mx-1">
                                 <a class="nav-link button-blue" href="{{ path('app_logout') }}">Uitloggen</a>
+                            </li>
+                            <li class="nav-item ms-1">
+                                <a class="nav-link button-blue" href="{{ path('app_user_settings') }}"><i class="fa-solid fa-gear"></i></a>
                             </li>
                         {% endif %}
                         {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}

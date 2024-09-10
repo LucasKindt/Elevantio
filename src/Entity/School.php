@@ -69,4 +69,9 @@ class School
 
         return $this;
     }
+
+    public function toString(): string
+    {
+        return $this->Name;
+    }
 }

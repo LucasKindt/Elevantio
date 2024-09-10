@@ -3,28 +3,31 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Child;
+use App\Entity\School;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class ChildCrudController extends AbstractCrudController
+class SchoolCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Child::class;
+        return School::class;
     }
 
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle('index', 'Kind')
-            ->setPageTitle('new', 'Kind toevoegen')
-            ->setPageTitle('edit', 'Kind aanpassen')
-            ->setPageTitle('detail', 'Kind')
+            ->setPageTitle('index', 'School')
+            ->setPageTitle('new', 'School toevoegen')
+            ->setPageTitle('edit', 'School aanpassen')
+            ->setPageTitle('detail', 'School')
             ;
     }
 
@@ -40,9 +43,6 @@ class ChildCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name', 'Naam'),
-            TextField::new('age', 'Leeftijd'),
-            TextField::new('class', 'Klas'),
-            AssociationField::new('parent', 'Ouder'),
         ];
     }
 }
