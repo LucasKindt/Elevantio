@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\RegistrationType;
+use App\Repository\SponsorRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -24,7 +25,7 @@ class RegistrationController extends AbstractDashboardController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, SponsorRepository $sponsorRepository): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
@@ -48,7 +49,7 @@ class RegistrationController extends AbstractDashboardController
                     ->from(new Address('lucaskindt77@gmail.com', 'Mailer'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
-                    ->htmlTemplate('admin/register.html.twig')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
             // do anything else you need here, like send an email
@@ -58,6 +59,7 @@ class RegistrationController extends AbstractDashboardController
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
+            'sponsors' => $sponsorRepository->findAll(),
         ]);
     }
 

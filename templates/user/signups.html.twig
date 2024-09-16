@@ -8,7 +8,7 @@
         .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
     </style>
 
-    <div class="container py-4">
+    <div class="container py-4" data-controller="UserChildren">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-11 col-xl-10 mx-auto">
                 <h2 class="h3 mb-4 page-title">Instellingen</h2>
@@ -24,20 +24,34 @@
                             <a class="nav-link active" id="children-tab" data-toggle="tab" href="{{ path('app_user_signups') }}" role="tab" aria-controls="signups" aria-selected="false">Aanmeldingen</a>
                         </li>
                     </ul>
-                    <form method="post" action="">
-                        {{ form_row(form.name) }}
-                        {{ form_row(form.email) }}
-                        <hr class="my-4" />
-{#                        <div class="row mb-4">#}
-{#                            <div class="col-md-6">#}
-{#                                {{ form_row(form.password) }}#}
-{#                            </div>#}
-{#                        </div>#}
-                        <button type="submit" class="btn button-submit">Opslaan</button>
-                    </form>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Activiteit</th>
+                            <th>Kind</th>
+                            <th>Aangemeld op</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for signup in signups %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('app_activities') }}?highlight={{ signup.activity.id }}">
+                                        {{ signup.activity.name }}
+                                    </a>
+                                </td>                                <td>{{ signup.child.name }}</td>
+                                <td>{{ signup.signedUpAt|date('Y-m-d H:i') }}</td>
+                                <td>
+                                    <a href="{{ path('activity_cancel', {'id': signup.id}) }}" class="btn btn-danger">Afmelden</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
     </div>
 {% endblock %}

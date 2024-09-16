@@ -6,6 +6,7 @@ use App\Entity\Activity;
 use App\Entity\Category;
 use App\Entity\Child;
 use App\Entity\School;
+use App\Entity\Signup;
 use App\Entity\Sponsor;
 use App\Entity\TargetGroup;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -38,10 +39,12 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Activiteiten', 'fa fa-tasks', Activity::class);
         yield MenuItem::linkToCrud('Scholen', 'fa fa-school', School::class);
         yield MenuItem::linkToCrud('Gebruikers', 'fa fa-user', User::class);
-        yield MenuItem::linkToCrud('Categorieën', 'fa fa-user', Category::class);
+        yield MenuItem::linkToCrud('Categorieën', 'fa fa-list-alt', Category::class);
         yield MenuItem::linkToCrud('Sponsoren', 'fa fa-heart', Sponsor::class);
         yield MenuItem::linkToCrud('Doelgroepen', 'fa fa-user', TargetGroup::class);
         yield MenuItem::linkToCrud('Kinderen', 'fa fa-child', Child::class);
+        //yield MenuItem::linkToCrud('Aanmeldingen', 'fa fa-child', Signup::class);
+
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 

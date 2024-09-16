@@ -17,3 +17,8 @@ body {background-color: white; font-family: "Comic Neue"}
 
 .bg-orange {background-color: #EE7418;}
 .bg-blue {background-color: #0197A2;}
+
+.highlight {
+    background-color: #ffeb3b; /* Yellow background for highlighting */
+    border: 2px solid #fbc02d; /* Darker yellow border */
+}

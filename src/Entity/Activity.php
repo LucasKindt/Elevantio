@@ -55,9 +55,16 @@ class Activity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $location = null;
 
+    /**
+     * @var Collection<int, Signup>
+     */
+    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'activity')]
+    private Collection $signups;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->signups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -181,6 +188,36 @@ class Activity
     public function setLocation(?string $location): static
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Signup>
+     */
+    public function getSignups(): Collection
+    {
+        return $this->signups;
+    }
+
+    public function addSignup(Signup $signup): static
+    {
+        if (!$this->signups->contains($signup)) {
+            $this->signups->add($signup);
+            $signup->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSignup(Signup $signup): static
+    {
+        if ($this->signups->removeElement($signup)) {
+            // set the owning side to null (unless already changed)
+            if ($signup->getActivity() === $this) {
+                $signup->setActivity(null);
+            }
+        }
 
         return $this;
     }

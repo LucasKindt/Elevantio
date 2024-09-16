@@ -14,7 +14,7 @@
             </div>
             <div class="col-md-10 col-12">
                 {% for activity in activities %}
-                <div class="col-12 col-md-6 border-orange p-2">
+                <div class="col-12 col-md-6 border-orange p-2 {{ activity.id == app.request.query.get("highlight") ? 'bg-blue text-white' : '' }}">
                     <div class="row">
                         <div class="col-3">
                             <img class="img-fluid" alt="thumbnail" src="{{ asset('uploads/images/') }}{{ activity.image }}"/>
@@ -27,20 +27,23 @@
                                 {{ activity.description }}
                             </div>
                             <div class="col-12 my-1">
-                                Groep: {{ activity.targetGroup }}
+                                <b>Datum:</b> {{ activity.date|format_datetime }}
                             </div>
                             <div class="col-12 my-1">
-                                Locatie: {{ activity.location }}
+                                <b>Groep:</b> {{ activity.targetGroup }}
                             </div>
                             <div class="col-12 my-1">
-                                Prijs:
+                                <b>Locatie:</b> {{ activity.location }}
+                            </div>
+                            <div class="col-12 my-1">
+                                <b>Prijs:</b>
                                 {% if activity.price == not 0%}
                                     activity.price|format_currency('EUR')
                                 {% else %}
                                     Gratis
                                 {% endif %}
                             </div>
-                            <a class="btn button-submit" href="">Inschrijven</a>
+                            <a class="btn button-submit {{ activity.id == app.request.query.get("highlight") ? 'bg-orange' : '' }}" href="{{ path('app_signup', {id: activity.id}) }}">Inschrijven</a>
                         </div>
                     </div>
                 </div>

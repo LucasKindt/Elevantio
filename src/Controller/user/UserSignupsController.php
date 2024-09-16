@@ -2,43 +2,33 @@
 
 namespace App\Controller\user;
 
-use App\Form\UserChildrenType;
 use App\Repository\SponsorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\Persistence\ManagerRegistry;
 
-class UserChildrenController extends AbstractController
+use App\Entity\User;
+
+class UserSignupsController extends AbstractController
 {
-    #[Route('/gebruiker/kinderen', name: 'app_user_children')]
+
+    #[Route('/gebruiker/inschrijvingen', name: 'app_user_signups')]
     public function index(
         sponsorRepository $sponsorRepository,
-        Request $request,
-        Security $security,
-        EntityManagerInterface $entityManager
     ): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $user = $this->getUser();
 
-        $form = $this->createForm(UserChildrenType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_children');
-        }
-
-        return $this->render('user/children.html.twig', [
-            'form' => $form,
+        return $this->render('user/signups.html.twig', [
             'user' => $user,
+            'signups' => $user->getSignups(),
             'sponsors' => $sponsorRepository->findAll(),
         ]);
     }
