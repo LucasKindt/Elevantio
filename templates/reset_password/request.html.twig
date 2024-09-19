@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <main class="container w-50 p-5">
+
+        {% for flash_error in app.flashes('reset_password_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+
+        <form name="reset_password_request_form" method="post">
+            <h1 class="h3 mb-3 fw-normal">Wachtwoord vergeten</h1>
+            <div class="form-floating my-2">
+                <input type="email" name="reset_password_request_form[email]" class="form-control" id="reset_password_request_form_email" placeholder="naam@voorbeeld.com" required>
+                <label for="reset_password_request_form_email">Email</label>
+            </div>
+            <p>
+                Vul je email in en we sturen je een link om je wachtwoord te resetten.
+            </p>
+            <button type="submit" class="btn button-submit">Verstuur</button>
+            {{ form_row(requestForm._token) }}
+        </form>
+    </main>
+{% endblock %}
