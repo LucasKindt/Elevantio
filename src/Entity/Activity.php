@@ -58,8 +58,11 @@ class Activity
     /**
      * @var Collection<int, Signup>
      */
-    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'activity')]
+    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'activity', cascade: ['persist', 'remove'])]
     private Collection $signups;
+
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    private ?School $school = null;
 
     public function __construct()
     {
@@ -220,5 +223,22 @@ class Activity
         }
 
         return $this;
+    }
+
+    public function getSchool(): ?School
+    {
+        return $this->school;
+    }
+
+    public function setSchool(?School $school): static
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

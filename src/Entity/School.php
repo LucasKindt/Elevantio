@@ -24,9 +24,16 @@ class School
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'schools')]
     private Collection $Users;
 
+    /**
+     * @var Collection<int, Activity>
+     */
+    #[ORM\OneToMany(targetEntity: Activity::class, mappedBy: 'school')]
+    private Collection $activities;
+
     public function __construct()
     {
         $this->Users = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,6 +78,41 @@ class School
     }
 
     public function toString(): string
+    {
+        return $this->Name;
+    }
+
+    /**
+     * @return Collection<int, Activity>
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): static
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities->add($activity);
+            $activity->setSchool($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): static
+    {
+        if ($this->activities->removeElement($activity)) {
+            // set the owning side to null (unless already changed)
+            if ($activity->getSchool() === $this) {
+                $activity->setSchool(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
     {
         return $this->Name;
     }

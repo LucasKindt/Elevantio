@@ -1,0 +1,11 @@
+<img src="{{ asset('images/logo.png') }}" alt="logo"/>
+
+<p>
+    Dit is een reminder dat u een inchrijving hebt staan voor {{ signup.activity.name}}. <br><br>
+    De activiteit staat gepland om {{ signup.activity.date|date('d-m-Y H:i') }}. <br><br>
+    De activiteit vindt plaats in {{ signup.activity.location }}. <br><br>
+</p>
+
+<p>
+    Cheers!
+</p>

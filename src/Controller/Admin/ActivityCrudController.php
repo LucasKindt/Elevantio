@@ -45,6 +45,7 @@ class ActivityCrudController extends AbstractCrudController
             TextField::new('name', 'Naam'),
             TextareaField::new('description', 'Beschrijving'),
             TextField::new('location', 'Locatie'),
+            AssociationField::new('school', 'School')->autocomplete(),
             AssociationField::new('targetGroup', 'Doelgroep')->autocomplete(),
             AssociationField::new('category', 'Categorie')->autocomplete(),
             ImageField::new('image', 'Afbeelding')

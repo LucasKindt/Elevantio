@@ -36,13 +36,24 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Activiteiten', 'fa fa-tasks', Activity::class);
-        yield MenuItem::linkToCrud('Scholen', 'fa fa-school', School::class);
+        yield MenuItem::subMenu('Activiteiten', 'fa fa-tasks')
+            ->setSubItems([
+                MenuItem::linkToCrud('Beheren', 'fa fa-list', Activity::class)
+                    ->setPermission('ROLE_ADMIN'),
+                MenuItem::linkToCrud('Inschrijvingen', 'fa fa-sign-in', Signup::class)
+                    ->setPermission('ROLE_ADMIN'),
+                MenuItem::linkToCrud('Categorieën', 'fa fa-list-alt', Category::class)
+                    ->setPermission('ROLE_ADMIN'),
+                MenuItem::linkToCrud('Scholen', 'fa fa-school', School::class)
+                    ->setPermission('ROLE_ADMIN'),
+                MenuItem::linkToCrud('Doelgroepen', 'fa fa-user', TargetGroup::class)
+                    ->setPermission('ROLE_ADMIN'),
+            ]);
+        yield MenUitem::section('<hr>');
         yield MenuItem::linkToCrud('Gebruikers', 'fa fa-user', User::class);
-        yield MenuItem::linkToCrud('Categorieën', 'fa fa-list-alt', Category::class);
-        yield MenuItem::linkToCrud('Sponsoren', 'fa fa-heart', Sponsor::class);
-        yield MenuItem::linkToCrud('Doelgroepen', 'fa fa-user', TargetGroup::class);
         yield MenuItem::linkToCrud('Kinderen', 'fa fa-child', Child::class);
+        yield MenuItem::linkToCrud('Sponsoren', 'fa fa-heart', Sponsor::class);
+
         //yield MenuItem::linkToCrud('Aanmeldingen', 'fa fa-child', Signup::class);
 
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
