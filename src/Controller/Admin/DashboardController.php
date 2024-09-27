@@ -42,6 +42,9 @@ class DashboardController extends AbstractDashboardController
                     ->setPermission('ROLE_ADMIN'),
                 MenuItem::linkToCrud('Inschrijvingen', 'fa fa-sign-in', Signup::class)
                     ->setPermission('ROLE_ADMIN'),
+            ]);
+        yield MenuItem::subMenu('Variabelen', 'fa fa-gear')
+            ->setSubItems([
                 MenuItem::linkToCrud('Categorieën', 'fa fa-list-alt', Category::class)
                     ->setPermission('ROLE_ADMIN'),
                 MenuItem::linkToCrud('Scholen', 'fa fa-school', School::class)
@@ -68,15 +71,6 @@ class DashboardController extends AbstractDashboardController
             // use the given $user object to get the user name
             ->setName($user->getEmail())
             // use this method if you don't want to display the name of the user
-            ->displayUserName(false)
-
-            // you can also pass an email address to use gravatar's service
-            //->setGravatarEmail($user->getMainEmailAddress())
-
-            // you can use any type of menu item, except submenus
-            ->addMenuItems([
-                MenuItem::linkToRoute('My Profile', 'fa fa-id-card', '...', ['...' => '...']),
-                MenuItem::linkToRoute('Settings', 'fa fa-user-cog', '...', ['...' => '...']),
-            ]);
+            ->displayUserName(false);
     }
 }

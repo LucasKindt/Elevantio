@@ -35,38 +35,38 @@
             {% endfor %}
         </div>
 
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
                 <a href="{{ path('app_home') }}"><img class="w-50" src="{{ asset('images/logo.png') }}" alt="logo"/></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto text-center text-lg-start">
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li class="nav-item mx-1">
-                                <a class="nav-link button-orange" href="{{ path('app_dashboard') }}">Beheer</a>
+                            <li class="nav-item mx-1 mb-1 mb-lg-0">
+                                <a class="nav-link button-orange" href="{{ path('app_dashboard') }}" target="_blank">Beheer</a>
                             </li>
                         {% endif %}
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                            <li class="nav-item mx-1">
+                            <li class="nav-item mx-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-orange" href="{{ path('app_user_signups') }}">Mijn inschrijvingen</a>
                             </li>
-                            <li class="nav-item mx-1">
+                            <li class="nav-item mx-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-orange" href="{{ path('app_activities') }}">Activiteiten bekijken</a>
                             </li>
-                            <li class="nav-item mx-1">
+                            <li class="nav-item mx-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-blue" href="{{ path('app_logout') }}">Uitloggen</a>
                             </li>
-                            <li class="nav-item ms-1">
+                            <li class="nav-item ms-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-blue" href="{{ path('app_user_settings') }}"><i class="fa-solid fa-gear"></i></a>
                             </li>
                         {% endif %}
                         {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                            <li class="nav-item mx-2">
+                            <li class="nav-item mx-2 mb-1 mb-lg-0">
                                 <a class="nav-link button-orange" href="{{ path('app_login') }}">Inloggen</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mb-1 mb-lg-0">
                                 <a class="nav-link button-blue" href="{{ path('app_register') }}">Registreren</a>
                             </li>
                         {% endif %}

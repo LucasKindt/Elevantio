@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Signup;
 use App\Form\SignupType;
 use App\Repository\ActivityRepository;
+use App\Repository\ChildRepository;
+use App\Repository\SignupRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,12 +22,12 @@ class ActivityController extends AbstractController
 {
     #[Route('/activiteiten', name: 'app_activities')]
     public function __invoke(
-        Request $request,
-        FormFactoryInterface $formFactory,
+        Request                $request,
+        FormFactoryInterface   $formFactory,
         EntityManagerInterface $em,
-        FilterBuilderUpdater $filterBuilderUpdater,
-        ActivityRepository $activityRepository,
-        sponsorRepository $sponsorRepository
+        FilterBuilderUpdater   $filterBuilderUpdater,
+        ActivityRepository     $activityRepository,
+        sponsorRepository      $sponsorRepository,
     ): Response
     {
         $form = $formFactory->create(ActivityFilterType::class);
@@ -45,24 +47,47 @@ class ActivityController extends AbstractController
         ]);
     }
 
-    #[Route('/activity/{id}/inschrijven', name: 'app_signup')]
-    public function signup(Request $request, EntityManagerInterface $entityManager, Activity $activity, SponsorRepository $sponsorRepository): Response
+    #[Route('/activiteiten/{id}/inschrijven', name: 'app_signup')]
+    public function signup(Request $request, EntityManagerInterface $entityManager, Activity $activity, SponsorRepository $sponsorRepository, SignupRepository $signupRepository): Response
     {
-        $signup = new Signup();
-
         $user = $this->getUser();
 
-        $form = $this->createForm(SignupType::class, null, ['children' => $user->getChildren()]);
+        $userChildren = array();
+        foreach ($user->getChildren() as $child) {
+            $i = true;
+            foreach ($child->getSignups() as $signup) {
+                if ($signup->getActivity()->getId() == $activity->getId()) {
+                    $i = false;
+                }
+            }
+
+            if ($i) {
+                $userChildren[] = $child;
+            }
+        }
+
+        if (empty($userChildren)) {
+            $this->addFlash(
+                'notice',
+                'Je hebt geen kinderen die aan deze activiteit kunnen deelnemen.'
+            );
+
+            return $this->redirectToRoute('app_activities', ['id' => $activity->getId()]);
+        }
+
+        $form = $this->createForm(SignupType::class, null, ['children' => $userChildren]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($form->get('children')->getData() as $child) {
-                $signupEntity = new Signup();
-                $signupEntity->setChild($child); // Single child per signup
-                $signupEntity->setUser($user);
-                $signupEntity->setActivity($activity);
-                $signupEntity->setSignedUpAt(new \DateTime());
-                $entityManager->persist($signupEntity);
+                if (!$signupRepository->findBy(array('child' => $child, 'activity' => $activity))) {
+                    $signupEntity = new Signup();
+                    $signupEntity->setChild($child); // Single child per signup
+                    $signupEntity->setUser($user);
+                    $signupEntity->setActivity($activity);
+                    $signupEntity->setSignedUpAt(new \DateTime());
+                    $entityManager->persist($signupEntity);
+                }
             }
             $entityManager->flush();
 
@@ -81,7 +106,7 @@ class ActivityController extends AbstractController
         ]);
     }
 
-    #[Route('/activity/{id}/cancel', name: 'activity_cancel')]
+    #[Route('/activiteiten/{id}/cancel', name: 'activity_cancel')]
     public function cancelSignup(Request $request, EntityManagerInterface $entityManager, Signup $signup): Response
     {
         $entityManager->remove($signup);
@@ -92,6 +117,6 @@ class ActivityController extends AbstractController
             'Afmelding(en) voltooid.'
         );
 
-        return $this->redirectToRoute('app_activities', ['id' => $signup->getActivity()->getId()]);
+        return $this->redirectToRoute('app_user_signups', ['id' => $signup->getActivity()->getId()]);
     }
 }

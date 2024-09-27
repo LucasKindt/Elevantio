@@ -24,7 +24,7 @@ class LoginController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
             'csrf_token_intention' => 'authenticate',
-            'target_path' => '/',
+            'target_path' => $this->generateUrl('app_home'),
         ]);
     }
 

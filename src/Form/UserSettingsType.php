@@ -20,7 +20,7 @@ class UserSettingsType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'Naam',])
-            ->add('email', EmailType::class, ['label' => 'Email',])
+            ->add('email', EmailType::class, ['label' => 'Email', 'disabled' => true])
 //            ->add('password', PasswordType::class, ['label' => 'Nieuw Wachtwoord', 'required' => false])
         ;
     }

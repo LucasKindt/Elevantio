@@ -31,14 +31,13 @@ class Child
     /**
      * @var Collection<int, Signup>
      */
-    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'child')]
+    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'child', cascade: ['persist', 'remove'])]
     private Collection $signups;
 
 
     public function __construct()
     {
         $this->signups = new ArrayCollection();
-        $this->activity = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,7 +105,7 @@ class Child
     {
         if (!$this->signups->contains($signup)) {
             $this->signups->add($signup);
-            $signup->addChild($this);
+            $signup->setChild($this);
         }
 
         return $this;
@@ -115,37 +114,7 @@ class Child
     public function removeSignup(Signup $signup): static
     {
         if ($this->signups->removeElement($signup)) {
-            $signup->removeChild($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Signup>
-     */
-    public function getActivity(): Collection
-    {
-        return $this->activity;
-    }
-
-    public function addActivity(Signup $activity): static
-    {
-        if (!$this->activity->contains($activity)) {
-            $this->activity->add($activity);
-            $activity->setChild($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivity(Signup $activity): static
-    {
-        if ($this->activity->removeElement($activity)) {
-            // set the owning side to null (unless already changed)
-            if ($activity->getChild() === $this) {
-                $activity->setChild(null);
-            }
+            $signup->setChild(null);
         }
 
         return $this;

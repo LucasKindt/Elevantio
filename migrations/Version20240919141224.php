@@ -29,11 +29,6 @@ final class Version20240919141224 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
-        $this->addSql('DROP TABLE reset_password_request');
-        $this->addSql('ALTER TABLE activity DROP FOREIGN KEY FK_AC74095AC32A47EE');
-        $this->addSql('DROP INDEX IDX_AC74095AC32A47EE ON activity');
-        $this->addSql('ALTER TABLE activity CHANGE school_id school_id INT NOT NULL');
+
     }
 }
