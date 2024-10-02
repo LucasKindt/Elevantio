@@ -35,6 +35,18 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
+    "jawira/doctrine-diagram-bundle": {
+        "version": "0.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.7",
+            "ref": "1c062f7d4e61eb3e7372c45d96d33358cccac15a"
+        },
+        "files": [
+            "./config/packages/doctrine_diagram.yaml"
+        ]
+    },
     "liip/imagine-bundle": {
         "version": "2.13",
         "recipe": {

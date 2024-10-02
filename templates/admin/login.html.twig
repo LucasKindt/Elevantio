@@ -8,7 +8,6 @@
             <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-
         <form action="{{ path('app_login') }}" method="post">
             <h1 class="h3 mb-3 fw-normal">Inloggen</h1>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

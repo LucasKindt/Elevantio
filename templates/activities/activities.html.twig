@@ -29,9 +29,6 @@
                                         {{ activity.description }}
                                     </div>
                                     <div class="col-12 my-1">
-                                        <b>Datum:</b> {{ activity.date|format_datetime }}
-                                    </div>
-                                    <div class="col-12 my-1">
                                         <b>Groep:</b> {{ activity.targetGroup }}
                                     </div>
                                     <div class="col-12 my-1">
@@ -40,7 +37,7 @@
                                     <div class="col-12 my-1">
                                         <b>Prijs:</b>
                                         {% if activity.price == not 0 %}
-                                            activity.price|format_currency('EUR')
+                                           {{ activity.price|format_currency('EUR') }}
                                         {% else %}
                                             Gratis
                                         {% endif %}

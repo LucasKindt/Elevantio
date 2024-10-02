@@ -37,9 +37,7 @@ class UserCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER)
-            ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-                return $action->setLabel('Nieuwe gebruiker');
-            })
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
             ;
     }
 
@@ -48,7 +46,7 @@ class UserCrudController extends AbstractCrudController
         return [
             TextField::new('Name', 'Naam'),
             EmailField::new('Email', 'Email'),
-            ChoiceField::new('roles', 'Rollen')->setChoices(['Gebruiker' => 'ROLE_USER', 'Beheerder' => 'ROLE_ADMIN'])->allowMultipleChoices()
+            ChoiceField::new('roles', 'Rollen')->setChoices(['Gebruiker' => 'ROLE_USER', 'Leverancier' => 'ROLE_SUPPLIER', 'Beheerder' => 'ROLE_ADMIN'])->allowMultipleChoices()
         ];
     }
 }

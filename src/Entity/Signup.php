@@ -19,10 +19,14 @@ class Signup
 
     #[ORM\ManyToOne(inversedBy: 'signups')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Activity $activity = null;
+    private ?ActivityDate $activityDate = null;
 
     #[ORM\Column]
     private ?\DateTime $signedUpAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'signups')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -41,14 +45,14 @@ class Signup
         return $this;
     }
 
-    public function getActivity(): ?Activity
+    public function getActivityDate(): ?ActivityDate
     {
-        return $this->activity;
+        return $this->activityDate;
     }
 
-    public function setActivity(?Activity $activity): static
+    public function setActivityDate(?ActivityDate $activityDate): static
     {
-        $this->activity = $activity;
+        $this->activityDate = $activityDate;
 
         return $this;
     }
@@ -61,6 +65,18 @@ class Signup
     public function setSignedUpAt(\DateTime $signedUpAt): static
     {
         $this->signedUpAt = $signedUpAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -10,12 +10,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class PageController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function home(
-        sponsorRepository $sponsorRepository,
-    ): Response
+    public function index(sponsorRepository $sponsorRepository): Response
     {
         return $this->render('pages/home.html.twig', [
-            'controller_name' => 'PageController',
             'sponsors' => $sponsorRepository->findAll(),
         ]);
     }

@@ -23,8 +23,15 @@ class DashboardController extends AbstractDashboardController
     #[Route('/beheer', name: 'app_dashboard')]
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        return $this->render('admin/index.html.twig');
+        // If isn't admin or supplier
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_SUPPLIER'))
+        {
+            return $this->render('admin/index.html.twig');
+        }
+        else
+        {
+            throw $this->createAccessDeniedException();
+        }
     }
 
     public function configureDashboard(): Dashboard
@@ -39,7 +46,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Activiteiten', 'fa fa-tasks')
             ->setSubItems([
                 MenuItem::linkToCrud('Beheren', 'fa fa-list', Activity::class)
-                    ->setPermission('ROLE_ADMIN'),
+                    ->setPermission('ROLE_ADMIN')->setPermission('ROLE_SUPPLIER'),
                 MenuItem::linkToCrud('Inschrijvingen', 'fa fa-sign-in', Signup::class)
                     ->setPermission('ROLE_ADMIN'),
             ]);
@@ -53,9 +60,12 @@ class DashboardController extends AbstractDashboardController
                     ->setPermission('ROLE_ADMIN'),
             ]);
         yield MenUitem::section('<hr>');
-        yield MenuItem::linkToCrud('Gebruikers', 'fa fa-user', User::class);
-        yield MenuItem::linkToCrud('Kinderen', 'fa fa-child', Child::class);
-        yield MenuItem::linkToCrud('Sponsoren', 'fa fa-heart', Sponsor::class);
+        yield MenuItem::linkToCrud('Gebruikers', 'fa fa-user', User::class)
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Kinderen', 'fa fa-child', Child::class)
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Sponsoren', 'fa fa-heart', Sponsor::class)
+            ->setPermission('ROLE_ADMIN');
 
         //yield MenuItem::linkToCrud('Aanmeldingen', 'fa fa-child', Signup::class);
 

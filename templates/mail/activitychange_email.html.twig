@@ -1,7 +1,7 @@
 <img src="https://i.imgur.com/dibx5dd.png" alt="logo"/>
 
 <p>
-    U heeft {{ signup.child.name }} ingeschreven voor activiteit: {{ activity.name}}. <br><br>
+    U heeft {{ signup.child.name }} ingeschreven voor activiteit: {{ signup.activityDate.activity.name}}. <br><br>
     Deze activiteit is geannuleerd, u bent automatisch uitgeschreven. <br><br>
     Indien u nog niet uitgeschreven bent, kunt u dit doen via de link hieronder. <br><br>
     <a href="{{ url('app_user_signups') }}">Uitschrijven</a>

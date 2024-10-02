@@ -17,9 +17,6 @@ class ActivityType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('image')
-            ->add('date', null, [
-                'widget' => 'single_text',
-            ])
             ->add('price')
             ->add('users', EntityType::class, [
                 'class' => User::class,

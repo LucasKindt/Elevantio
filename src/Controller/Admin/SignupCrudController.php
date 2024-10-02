@@ -34,9 +34,7 @@ class SignupCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER)
-            ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
-                return $action->setLabel('Nieuwe aanmelding');
-            })
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
             ;
     }
 

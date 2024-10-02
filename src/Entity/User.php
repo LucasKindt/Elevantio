@@ -48,22 +48,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $schools;
 
     /**
-     * @var Collection<int, Activity>
-     */
-    #[ORM\ManyToMany(targetEntity: Activity::class, mappedBy: 'users')]
-    private Collection $activities;
-
-    /**
      * @var Collection<int, Child>
      */
     #[ORM\OneToMany(targetEntity: Child::class, mappedBy: 'parent', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $children;
 
+    /**
+     * @var Collection<int, Signup>
+     */
+    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'user')]
+    private Collection $signups;
+
+    /**
+     * @var Collection<int, Activity>
+     */
+    #[ORM\OneToMany(targetEntity: Activity::class, mappedBy: 'creator')]
+    private Collection $activities;
+
     public function __construct()
     {
         $this->schools = new ArrayCollection();
-        $this->activities = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->signups = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,33 +200,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Activity>
-     */
-    public function getActivities(): Collection
-    {
-        return $this->activities;
-    }
-
-    public function addActivity(Activity $activity): static
-    {
-        if (!$this->activities->contains($activity)) {
-            $this->activities->add($activity);
-            $activity->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivity(Activity $activity): static
-    {
-        if ($this->activities->removeElement($activity)) {
-            $activity->removeUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Child>
      */
     public function getChildren(): Collection
@@ -252,5 +232,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    /**
+     * @return Collection<int, Signup>
+     */
+    public function getSignups(): Collection
+    {
+        return $this->signups;
+    }
+
+    public function addSignup(Signup $signup): static
+    {
+        if (!$this->signups->contains($signup)) {
+            $this->signups->add($signup);
+            $signup->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSignup(Signup $signup): static
+    {
+        if ($this->signups->removeElement($signup)) {
+            // set the owning side to null (unless already changed)
+            if ($signup->getUser() === $this) {
+                $signup->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Activity>
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): static
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities->add($activity);
+            $activity->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): static
+    {
+        if ($this->activities->removeElement($activity)) {
+            // set the owning side to null (unless already changed)
+            if ($activity->getCreator() === $this) {
+                $activity->setCreator(null);
+            }
+        }
+
+        return $this;
     }
 }

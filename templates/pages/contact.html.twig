@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} De rijke schooldag{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <p>
+            Als u een vraag heeft kunt u deze hier achterlaten.<br> Er wordt zo snel mogelijk contact met u opgenomen.
+        </p>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -43,7 +43,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto text-center text-lg-start">
-                        {% if is_granted('ROLE_ADMIN') %}
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPPLIER') %}
                             <li class="nav-item mx-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-orange" href="{{ path('app_dashboard') }}" target="_blank">Beheer</a>
                             </li>
@@ -62,6 +62,9 @@
                                 <a class="nav-link button-blue" href="{{ path('app_user_settings') }}"><i class="fa-solid fa-gear"></i></a>
                             </li>
                         {% endif %}
+                        <li class="nav-item mx-1 mb-1 mb-lg-0">
+                            <a class="nav-link button-orange" href="{{ path('app_contact') }}">Contact</a>
+                        </li>
                         {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             <li class="nav-item mx-2 mb-1 mb-lg-0">
                                 <a class="nav-link button-orange" href="{{ path('app_login') }}">Inloggen</a>

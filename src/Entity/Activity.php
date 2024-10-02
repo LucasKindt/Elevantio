@@ -34,17 +34,8 @@ class Activity
      */
     private ?string $image = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
-
     #[ORM\Column]
     private ?int $price = null;
-
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'activities')]
-    private Collection $users;
 
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?Category $category = null;
@@ -55,19 +46,21 @@ class Activity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $location = null;
 
-    /**
-     * @var Collection<int, Signup>
-     */
-    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'activity', cascade: ['persist', 'remove'])]
-    private Collection $signups;
-
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?School $school = null;
 
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    private ?User $creator = null;
+
+    /**
+     * @var Collection<int, ActivityDate>
+     */
+    #[ORM\OneToMany(targetEntity: ActivityDate::class, mappedBy: 'Activity', cascade: ['persist', 'remove'])]
+    private Collection $activityDates;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->signups = new ArrayCollection();
+        $this->activityDates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,18 +104,6 @@ class Activity
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
     public function getPrice(): ?int
     {
         return $this->price;
@@ -134,31 +115,6 @@ class Activity
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        $this->users->removeElement($user);
-
-        return $this;
-    }
-
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -195,36 +151,6 @@ class Activity
         return $this;
     }
 
-    /**
-     * @return Collection<int, Signup>
-     */
-    public function getSignups(): Collection
-    {
-        return $this->signups;
-    }
-
-    public function addSignup(Signup $signup): static
-    {
-        if (!$this->signups->contains($signup)) {
-            $this->signups->add($signup);
-            $signup->setActivity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSignup(Signup $signup): static
-    {
-        if ($this->signups->removeElement($signup)) {
-            // set the owning side to null (unless already changed)
-            if ($signup->getActivity() === $this) {
-                $signup->setActivity(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getSchool(): ?School
     {
         return $this->school;
@@ -240,5 +166,47 @@ class Activity
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): static
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ActivityDate>
+     */
+    public function getActivityDates(): Collection
+    {
+        return $this->activityDates;
+    }
+
+    public function addActivityDate(ActivityDate $activityDate): static
+    {
+        if (!$this->activityDates->contains($activityDate)) {
+            $this->activityDates->add($activityDate);
+            $activityDate->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivityDate(ActivityDate $activityDate): static
+    {
+        if ($this->activityDates->removeElement($activityDate)) {
+            // set the owning side to null (unless already changed)
+            if ($activityDate->getActivity() === $this) {
+                $activityDate->setActivity(null);
+            }
+        }
+
+        return $this;
     }
 }
