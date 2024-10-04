@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ActivityDate;
 use App\Entity\Child;
 use App\Entity\Signup;
+use App\Entity\Sponsor;
 use App\Form\SignupType;
 use App\Repository\ActivityRepository;
 use App\Repository\SignupRepository;
@@ -50,51 +51,71 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/activiteiten/{id}/inschrijven', name: 'app_signup')]
-    public function signup(Request $request, EntityManagerInterface $entityManager, Activity $activity, SponsorRepository $sponsorRepository, SignupRepository $signupRepository): Response
+    public function signup(Request $request, EntityManagerInterface $entityManager, Activity $activity): Response
     {
-        $user = $this->getUser();
-        $children = !empty($user->getChildren()) ? $user->getChildren() : [];
-        $activityDates = $activity->getActivityDates();
+        $user = $this->getUser(); // Get the logged-in user
 
-        $form = $this->createForm(SignupType::class, [
-            'children' => $children,
-            'activity_dates' => $activityDates,
+        // Initialize the form with a new Signup object
+        $form = $this->createForm(SignupType::class, null, [
+            'user' => $user, // Pass the user to the form
+            'activity' => $activity,
         ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($form->get('children')->getData() as $child) {
-                if ($child instanceof Child) {
-                    if (!$signupRepository->findBy(array('child' => $child, 'activityDate' => $form->get('activity_date')))) {
-                        $signupEntity = new Signup();
-                        $signupEntity->setChild($child); // Single child per signup
-                        $signupEntity->setUser($user);
-                        $signupEntity->setActivityDate($form->get('activity_date')->getData());
-                        $signupEntity->setSignedUpAt(new DateTime());
-                        $entityManager->persist($signupEntity);
-                    }
+            // Get the selected child and activity dates
+            $activityDates = $form->get('activityDate')->getData();
+            $succes = false;
+            // For each selected activity date, create a new signup entry
+            foreach ($activityDates as $activityDate) {
+                if ($entityManager->getRepository(Signup::class)->findOneBy(['child' => $form->get('child')->getData(), 'activityDate' => $activityDate,]) === null) {
+                    $newSignup = new Signup();
+                    $newSignup->setChild($form->get('child')->getData());
+                    $newSignup->setActivityDate($activityDate);
+                    $newSignup->setSignedUpAt(new DateTime());
+                    $newSignup->setUser($user);
+
+                    $entityManager->persist($newSignup);
+
+                    $succes = true;
+                }
+                else
+                {
+                    $this->addFlash(
+                        'warning',
+                        'Een kind is al ingeschreven voor deze activiteit.'
+                    );
                 }
             }
+
+            if ($succes) {
+                $this->addFlash(
+                    'notice',
+                    'Aanmelding(en) voltooid.'
+                );
+            } else {
+                $this->addFlash(
+                    'warning',
+                    'Aanmelding(en) niet voltooid.'
+                );
+            }
+
             $entityManager->flush();
 
-            $this->addFlash(
-                'notice',
-                'Aanmelding(en) voltooid.'
-            );
 
-            return $this->redirectToRoute('app_activities', ['id' => $activity->getId()]);
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('activities/signup.html.twig', [
             'form' => $form->createView(),
             'activity' => $activity,
-            'sponsors' => $sponsorRepository->findAll(),
+            'sponsors' => $entityManager->getRepository(Sponsor::class)->findAll(),
         ]);
     }
 
     #[Route('/activiteiten/{id}/cancel', name: 'activity_cancel')]
-    public function cancelSignup(   EntityManagerInterface $entityManager, Signup $signup): Response
+    public function cancelSignup(EntityManagerInterface $entityManager, Signup $signup): Response
     {
         $entityManager->remove($signup);
         $entityManager->flush();

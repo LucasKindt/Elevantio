@@ -29,24 +29,31 @@
                         <thead>
                         <tr>
                             <th>Activiteit</th>
+                            <th>Datum</th>
                             <th>Kind</th>
                             <th>Aangemeld op</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for signup in signups %}
-                            <tr>
-                                <td>
-                                    <a href="{{ path('app_activities') }}?highlight={{ signup.activity.id }}">
-                                        {{ signup.activity.name }}
-                                    </a>
-                                </td>                                <td>{{ signup.child.name }}</td>
-                                <td>{{ signup.signedUpAt|date('Y-m-d H:i') }}</td>
-                                <td>
-                                    <a href="{{ path('activity_cancel', {'id': signup.id}) }}" class="btn btn-danger">Afmelden</a>
-                                </td>
-                            </tr>
+                        {% for activity in signups %}
+                            {% for activitydate in activity%}
+                                {% for signup in activitydate %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path('app_activities') }}?highlight={{ signup.activityDate.activity.id }}">
+                                                {{ signup.activityDate.activity.name }} - {{ signup.activityDate.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ signup.activityDate.date|date('l F d Y - H:i') }}</td>
+                                        <td>{{ signup.child.name }}</td>
+                                        <td>{{ signup.signedUpAt|date('Y-m-d H:i') }}</td>
+                                        <td>
+                                            <a href="{{ path('activity_cancel', {'id': signup.id}) }}" class="btn btn-danger">Afmelden</a>
+                                        </td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
                         {% endfor %}
                         </tbody>
                     </table>

@@ -67,7 +67,7 @@ class ActivityCrudController extends AbstractCrudController
             AssociationField::new('school', 'School')->autocomplete(),
             AssociationField::new('targetGroup', 'Doelgroep')->autocomplete(),
             AssociationField::new('category', 'Categorie')->autocomplete(),
-            CollectionField::new('activityDates', 'Datums')->setEntryType(ActivityDateType::class)->setTemplatePath('admin/fields/activitydates.html.twig'),
+            CollectionField::new('activityDates', 'Datums')->setEntryType(ActivityDateType::class)->setTemplatePath('admin/fields/activitydates.html.twig')->hideOnIndex(),
             ImageField::new('image', 'Afbeelding')
                 ->setBasePath('uploads/images/')
                 ->setUploadDir('public/uploads/images/')

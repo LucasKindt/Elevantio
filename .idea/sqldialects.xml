@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/activity.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/category.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/child.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/doctrine_migration_versions.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/messenger_messages.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/school.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/script.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/sponsor.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/target_group.sql" dialect="MariaDB" />
+    <file url="file://$USER_HOME$/Downloads/sql (1)/sql/user.sql" dialect="MariaDB" />
+  </component>
+</project>

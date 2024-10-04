@@ -9,23 +9,19 @@
                 <h1 class="mb-4 text-center">Inschrijven</h1>
 
                 <div class="card p-4">
-                    {{ form_start(form, {'attr': {'class': 'signup-form'}}) }}
 
                     <div class="form-group mb-3">
                         <h3 class="h5 mb-3">Voor wie wilt u inschrijven?</h3>
-                        {{ form_widget(form.children, {
-                            'attr': {'class': 'form-check-inline'},
-                            'label_attr': {'class': 'form-check-label'}
-                        }) }}
-                    </div>
+                        {{ form_start(form) }}
 
-                    <div class="text-center">
-                        <button type="submit" class="btn button-submit">
-                            Aanmelden
-                        </button>
-                    </div>
+                        {# Render the collection of signups #}
+                        {{ form_row(form.child) }}
+                        {{ form_row(form.activityDate) }}
 
-                    {{ form_end(form) }}
+                        <button class="btn btn-success">Submit</button>
+
+                        {{ form_end(form) }}
+                    </div>
                 </div>
             </div>
         </div>

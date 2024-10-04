@@ -21,9 +21,20 @@ class UserSignupsController extends AbstractController
 
         $user = $this->getUser();
 
+        $groupedSignups = [];
+
+        foreach ($user->getSignups() as $signup) {
+            $activityId = $signup->getActivityDate()->getActivity()->getId();
+            $activityDateId = $signup->getActivityDate()->getId();
+            if (!isset($groupedSignups[$activityId])) {
+                $groupedSignups[$activityId][$activityDateId] = [];
+            }
+            $groupedSignups[$activityId][$activityDateId][] = $signup;
+        }
+
         return $this->render('user/signups.html.twig', [
             'user' => $user,
-            'signups' => $user->getSignups(),
+            'signups' => $groupedSignups,
             'sponsors' => $sponsorRepository->findAll(),
         ]);
     }
