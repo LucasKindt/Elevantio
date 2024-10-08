@@ -47,8 +47,6 @@ class DashboardController extends AbstractDashboardController
             ->setSubItems([
                 MenuItem::linkToCrud('Beheren', 'fa fa-list', Activity::class)
                     ->setPermission('ROLE_ADMIN')->setPermission('ROLE_SUPPLIER'),
-                MenuItem::linkToCrud('Inschrijvingen', 'fa fa-sign-in', Signup::class)
-                    ->setPermission('ROLE_ADMIN'),
             ]);
         yield MenuItem::subMenu('Variabelen', 'fa fa-gear')
             ->setSubItems([

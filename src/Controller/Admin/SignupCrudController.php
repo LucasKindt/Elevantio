@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Activity;
 use App\Entity\Signup;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -42,7 +43,8 @@ class SignupCrudController extends AbstractCrudController
     {
         return [
             AssociationField::new('child', 'Kind'),
-            AssociationField::new('activity', 'Activiteit'),
+            //AssociationField::new('activityDate', 'Activiteit'),
+
         ];
     }
 }

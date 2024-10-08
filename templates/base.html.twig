@@ -34,7 +34,7 @@
             {% endfor %}
             {% endfor %}
         </div>
-
+    </body>
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
                 <a href="{{ path('app_home') }}"><img class="w-50" src="{{ asset('images/logo.png') }}" alt="logo"/></a>
@@ -48,6 +48,7 @@
                                 <a class="nav-link button-orange" href="{{ path('app_dashboard') }}" target="_blank">Beheer</a>
                             </li>
                         {% endif %}
+
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             <li class="nav-item mx-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-orange" href="{{ path('app_user_signups') }}">Mijn inschrijvingen</a>
@@ -56,16 +57,19 @@
                                 <a class="nav-link button-orange" href="{{ path('app_activities') }}">Activiteiten bekijken</a>
                             </li>
                             <li class="nav-item mx-1 mb-1 mb-lg-0">
+                                <a class="nav-link button-orange" href="{{ path('app_contact') }}">Contact</a>
+                            </li>
+                            <li class="nav-item mx-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-blue" href="{{ path('app_logout') }}">Uitloggen</a>
                             </li>
                             <li class="nav-item ms-1 mb-1 mb-lg-0">
                                 <a class="nav-link button-blue" href="{{ path('app_user_settings') }}"><i class="fa-solid fa-gear"></i></a>
                             </li>
                         {% endif %}
-                        <li class="nav-item mx-1 mb-1 mb-lg-0">
-                            <a class="nav-link button-orange" href="{{ path('app_contact') }}">Contact</a>
-                        </li>
                         {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li class="nav-item mx-1 mb-1 mb-lg-0">
+                                <a class="nav-link button-orange" href="{{ path('app_contact') }}">Contact</a>
+                            </li>
                             <li class="nav-item mx-2 mb-1 mb-lg-0">
                                 <a class="nav-link button-orange" href="{{ path('app_login') }}">Inloggen</a>
                             </li>
