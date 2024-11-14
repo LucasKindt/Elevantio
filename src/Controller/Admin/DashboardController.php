@@ -12,6 +12,7 @@ use App\Entity\School;
 use App\Entity\Signup;
 use App\Entity\Sponsor;
 use App\Entity\TargetGroup;
+use App\Entity\Treatment;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
@@ -45,10 +46,13 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')
+            ->setPermission('ROLE_EMPLOYEE');
         yield MenuItem::LinktoCrud('Medewerkers', 'fa fa-user', User::class)
             ->setPermission('ROLE_ADMIN');
         yield MenuItem::LinktoCrud('Producten', 'fa fa-star', Product::class)
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::LinktoCrud('Behandelingen', 'fa fa-scissors', Treatment::class)
             ->setPermission('ROLE_ADMIN');
         yield MenuItem::LinktoCrud('Bestellingen', 'fa fa-shopping-cart', Order::class)
             ->setPermission('ROLE_EMPLOYEE');

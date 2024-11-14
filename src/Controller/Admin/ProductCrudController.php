@@ -82,6 +82,7 @@ class ProductCrudController extends AbstractCrudController
                 ->setBasePath('images/products/')
                 ->setRequired(false)
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
-            ];
+            ,AssociationField::new('productCategories', 'Categorieën')->autocomplete()
+        ];
     }
 }

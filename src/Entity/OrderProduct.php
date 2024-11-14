@@ -16,15 +16,16 @@ class OrderProduct
     #[ORM\Column]
     private ?int $amount = null;
 
-    #[ORM\ManyToOne]
-    private ?Product $product = null;
-
     #[ORM\ManyToOne(inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $TOrder = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $stockUpdated = false;
+
+    #[ORM\ManyToOne(inversedBy: 'OrderProducts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
@@ -39,18 +40,6 @@ class OrderProduct
     public function setAmount(int $amount): static
     {
         $this->amount = $amount;
-
-        return $this;
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): static
-    {
-        $this->product = $product;
 
         return $this;
     }
@@ -79,6 +68,18 @@ class OrderProduct
     public function setStockUpdated(?bool $stockUpdated): static
     {
         $this->stockUpdated = $stockUpdated;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }
