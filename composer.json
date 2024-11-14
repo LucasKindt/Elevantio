@@ -14,6 +14,7 @@
         "doctrine/orm": "^3.2",
         "dragonmantank/cron-expression": "^3.3",
         "easycorp/easyadmin-bundle": "^4.11",
+        "hackzilla/password-generator-bundle": "*",
         "jawira/doctrine-diagram-bundle": "^0.8.0",
         "liip/imagine-bundle": "^2.13",
         "phpdocumentor/reflection-docblock": "^5.4",

@@ -1,4 +1,5 @@
 <?php
+umask(0002); // This will let the permissions be 0775
 
 use App\Kernel;
 

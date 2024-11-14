@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} De rijke schooldag{% endblock %}
+{% block title %}Je haar zit goed!{% endblock %}
 
 {% block body %}
     <main class="container w-50 p-5">
@@ -21,10 +21,6 @@
                 <label for="password">Wachtwoord</label>
             </div>
             <button class="btn button-submit w-100 py-2 mt-2" type="submit">Inloggen</button>
-            <p>
-                <span class="float-start"><a href="{{ path('app_forgot_password_request') }}">Wachtwoord vergeten</a></span>
-                <span class="float-end">Nog geen account? <a href="{{ path('app_register') }}">Meld je hier aan.</a></span>
-            </p>
         </form>
     </main>
 {% endblock %}

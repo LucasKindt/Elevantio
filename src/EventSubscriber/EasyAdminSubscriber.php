@@ -2,64 +2,105 @@
 # src/EventSubscriber/EasyAdminSubscriber.php
 namespace App\EventSubscriber;
 
-use App\Entity\Activity;
-use App\Service\MailService;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuiltEvent;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
+use App\Entity\Order;
+use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
-    private MailService $mailService;
 
-
-    public function __construct(MailService $mailerService)
+    public function __construct(
+        private UserPasswordHasherInterface $hasher,
+        private RequestStack $requestStack,
+    )
     {
-        $this->mailService = $mailerService;
     }
 
-    public static function getSubscribedEvents():  array
+    public static function getSubscribedEvents(): array
     {
         return [
-            AfterEntityDeletedEvent::class => ['AfterEntityDeleted'],
-            AfterEntityBuiltEvent::class => ['AfterEntityBuilt'],
+            BeforeEntityPersistedEvent::class => ['BeforeEntityPersistedEvent'],
+            BeforeEntityDeletedEvent::class => ['BeforeEntityDeletedEvent'],
+            BeforeEntityUpdatedEvent::class => ['BeforeEntityUpdatedEvent'],
         ];
     }
 
-    public function AfterEntityDeleted(AfterEntityDeletedEvent $event): void
+    #[NoReturn] public function BeforeEntityUpdatedEvent(BeforeEntityUpdatedEvent $event): void
     {
+        $session = $this->requestStack->getSession();
+
+        // Get entity from event
         $entity = $event->getEntityInstance();
+        // Check if entity is user
+        if ($entity instanceof User) {
+            // Check if password update is required
+            if($entity->getNewPassword() !== '' ) {
+                // Encode form NewPassword
+                $encodedPassword = $this->hasher->hashPassword($entity, $entity->getNewPassword());
+                // Set new user password
+                $entity->setPassword($encodedPassword);
+            }
+        }
 
-        if ($entity instanceof Activity) {
-            $signups = $entity->getSignups();
-
-            if(!empty($signups))
+        // Check if entity is order
+        if ($entity instanceof Order) {
+            foreach($entity->getOrderProducts() as $orderProduct)
             {
-                foreach ($signups as $signup) {
-                    $signup->setActivity(null);
-                    $user = $signup->getUser();
-                    $this->mailService->sendActivityChangedNotification($entity, $user);
+                if(!$orderProduct->isStockUpdated())
+                {
+                    $product = $orderProduct->getProduct();
+                    if($product->getStock() >= $orderProduct->getAmount())
+                    {
+                        $product->setStock($product->getStock() - $orderProduct->getAmount());
+                        $orderProduct->setStockUpdated(true);
+                    }
+                    else
+                    {
+                        $session->getFlashBag()->add('warning', 'Product niet op voorraad!');
+                        $entity->removeOrderProduct($orderProduct);
+                    }
                 }
             }
         }
-        else
-        {
-            return;
+    }
+
+    #[NoReturn] public function BeforeEntityPersistedEvent(BeforeEntityPersistedEvent $event): void
+    {
+        $session = $this->requestStack->getSession();
+
+        // Get entity from event
+        $entity = $event->getEntityInstance();
+        // Check if entity is order
+        if ($entity instanceof Order) {
+            foreach($entity->getOrderProducts() as $orderProduct)
+            {
+                if(!$orderProduct->isStockUpdated())
+                {
+                    $product = $orderProduct->getProduct();
+                    if($product->getStock() >= $orderProduct->getAmount())
+                    {
+                        $product->setStock($product->getStock() - $orderProduct->getAmount());
+                        $orderProduct->setStockUpdated(true);
+                    }
+                    else
+                    {
+                        $session->getFlashBag()->add('warning', 'Product niet op voorraad!');
+                        $entity->removeOrderProduct($orderProduct);
+                    }
+                }
+            }
         }
     }
 
-    public function AfterEntityBuilt(AfterEntityBuiltEvent $event): void
+    #[NoReturn] public function BeforeEntityDeletedEvent(BeforeEntityDeletedEvent $event): void
     {
-//        $entity = $event->getEntity();
-//
-//        if ($entity instanceof Activity) {
-//            $entity->setCreator($this->getUser());
-//            $this->entityManager->persist($entity);
-//            $this->entityManager->flush();
-//        }
-//        else
-//        {
-//            return;
-//        }
+        // Get entity from event
+        $entity = $event->getEntityInstance();
     }
 }

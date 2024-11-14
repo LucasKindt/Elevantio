@@ -35,6 +35,9 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
+    "hackzilla/password-generator-bundle": {
+        "version": "6.0.0"
+    },
     "jawira/doctrine-diagram-bundle": {
         "version": "0.8",
         "recipe": {

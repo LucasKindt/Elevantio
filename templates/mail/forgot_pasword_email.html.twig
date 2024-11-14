@@ -1,8 +1,0 @@
-<img src="https://i.imgur.com/dibx5dd.png" alt="logo"/>
-<p> Om uw wachtwoord te resetten, klik op de volgende link: </p>
-
-<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">Klik hier om uw wachtwoord te resetten</a>
-
-<p>Deze link is geldig voor {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
-
-<p>Bedankt!</p>

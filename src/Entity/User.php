@@ -36,42 +36,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private ?string $password = '';
+
+    private ?string $NewPassword = '';
 
     #[ORM\Column]
     private bool $isVerified = false;
-
-    /**
-     * @var Collection<int, School>
-     */
-    #[ORM\ManyToMany(targetEntity: School::class, mappedBy: 'Users')]
-    private Collection $schools;
-
-    /**
-     * @var Collection<int, Child>
-     */
-    #[ORM\OneToMany(targetEntity: Child::class, mappedBy: 'parent', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $children;
-
-    /**
-     * @var Collection<int, Signup>
-     */
-    #[ORM\OneToMany(targetEntity: Signup::class, mappedBy: 'user')]
-    private Collection $signups;
-
-    /**
-     * @var Collection<int, Activity>
-     */
-    #[ORM\OneToMany(targetEntity: Activity::class, mappedBy: 'creator')]
-    private Collection $activities;
-
-    public function __construct()
-    {
-        $this->schools = new ArrayCollection();
-        $this->children = new ArrayCollection();
-        $this->signups = new ArrayCollection();
-        $this->activities = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -136,6 +106,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getNewPassword(): string
+    {
+        return $this->NewPassword;
+    }
+
+    public function setNewPassword($password):  static
+    {
+        $this->NewPassword = $password;
+
+        return $this;
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -144,13 +126,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(?string $password): static
-    {
+    public function setPassword( ?string $password ): static {
         $this->password = $password;
 
         return $this;
     }
-
     /**
      * @see UserInterface
      */
@@ -168,128 +148,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, School>
-     */
-    public function getSchools(): Collection
-    {
-        return $this->schools;
-    }
-
-    public function addSchool(School $school): static
-    {
-        if (!$this->schools->contains($school)) {
-            $this->schools->add($school);
-            $school->addUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSchool(School $school): static
-    {
-        if ($this->schools->removeElement($school)) {
-            $school->removeUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Child>
-     */
-    public function getChildren(): Collection
-    {
-        return $this->children;
-    }
-
-    public function addChild(Child $child): static
-    {
-        if (!$this->children->contains($child)) {
-            $this->children->add($child);
-            $child->setParent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeChild(Child $child): static
-    {
-        if ($this->children->removeElement($child)) {
-            // set the owning side to null (unless already changed)
-            if ($child->getParent() === $this) {
-                $child->setParent(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->name;
-    }
-
-    /**
-     * @return Collection<int, Signup>
-     */
-    public function getSignups(): Collection
-    {
-        return $this->signups;
-    }
-
-    public function addSignup(Signup $signup): static
-    {
-        if (!$this->signups->contains($signup)) {
-            $this->signups->add($signup);
-            $signup->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSignup(Signup $signup): static
-    {
-        if ($this->signups->removeElement($signup)) {
-            // set the owning side to null (unless already changed)
-            if ($signup->getUser() === $this) {
-                $signup->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Activity>
-     */
-    public function getActivities(): Collection
-    {
-        return $this->activities;
-    }
-
-    public function addActivity(Activity $activity): static
-    {
-        if (!$this->activities->contains($activity)) {
-            $this->activities->add($activity);
-            $activity->setCreator($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivity(Activity $activity): static
-    {
-        if ($this->activities->removeElement($activity)) {
-            // set the owning side to null (unless already changed)
-            if ($activity->getCreator() === $this) {
-                $activity->setCreator(null);
-            }
-        }
 
         return $this;
     }
